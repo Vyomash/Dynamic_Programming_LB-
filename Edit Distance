@@ -83,6 +83,43 @@ public:
     }
 
 
+//Solve using space optimisation
+    int solveUsingTabSO(string& a, string& b){
+           // vector<vector<int>> dp(a.length()+1,vector<int>(b.length()+1,-1));
+            vector<int> next(a.length()+1,0);
+            vector<int> curr(a.length()+1,0);
+
+            //using base conditon 
+            // for(int col=0;col<=b.length();col++){
+            //     dp[a.length()][col]=b.length()-col;
+            // }
+            for(int row=0;row<=a.length();row++){
+                next[row]=a.length()-row;
+            }
+
+            for(int j=b.length()-1;j>=0;j--){
+                curr[a.length()]=b.length()-j;
+                for(int i=a.length()-1;i>=0;i--){
+                        int ans=0;
+                        if(a[i]==b[j]){
+                            ans=0+next[i+1];
+                        }
+                        else{
+                            int option1=1+next[i];     //insert
+                            int option2=1+curr[i+1];     //delete
+                            int option3=1+next[i+1];  //replace
+                            ans=min(option1,min(option2,option3));
+                        }
+                        curr[i]=ans;
+                    
+                    }
+                    next=curr;
+                }
+        return next[0];
+    }
+
+
+
     int minDistance(string word1, string word2) {
         //Method-3 Using tabulation
         int i=0;

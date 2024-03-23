@@ -49,6 +49,30 @@ public:
         return dp[0][0];
     }
 
+//solve using tabulation space optimisation
+int solveUsingTabulationSO(vector<int>& num ) {
+        int n = num.size();
+        //vector<vector<int> > dp(n+1, vector<int>(n+1, 0));
+        vector<int> currRow(n+1, 0);
+        vector<int> nextRow(n+1, 0);
+
+
+        for(int curr_index=n-1; curr_index>=0; curr_index--) {
+            for(int prev_index=curr_index-1; prev_index >= -1; prev_index--) {
+
+                int include = 0;
+                if(prev_index == -1 || num[curr_index] > num[prev_index] ) {
+                    include = 1 + nextRow[curr_index+1];
+                }
+                int exclude  = 0 + nextRow[prev_index+1];
+                currRow[prev_index+1] = max(include, exclude);
+            }
+            //shifting
+            nextRow = currRow;
+        }
+        return nextRow[0];
+    }
+
 
 //solve using binary search
     int solveUsingBS(vector<int>& nums){
